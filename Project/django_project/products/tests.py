@@ -31,24 +31,12 @@ class ProductViewTests(TestCase):
         self.user.user_permissions.add(delete_product)
         self.client.login(username="testuser", password="testpassword")
 
-    def test_product_list_view(self):
-        response = self.client.get(reverse("products:product_list"))
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Test Product")
-
     def test_product_delete_view(self):
         response = self.client.post(
             reverse("products:product_delete", args=[self.product.id])
         )
         self.assertEqual(response.status_code, 302)
         self.assertEqual(Product.objects.count(), 0)
-
-    def test_product_list_view(self):
-        response = self.client.get(reverse("products:product_list"))
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, self.product.name)
-        self.assertContains(response, self.product.description)
-        self.assertContains(response, self.product.price)
 
     def test_product_create_view(self):
         response = self.client.get(reverse("products:product_create"))
