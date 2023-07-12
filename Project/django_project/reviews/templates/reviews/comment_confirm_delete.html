@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<div style="display: flex; flex-direction: column; border: 1px solid black; padding: 5rem; background-color: white; border-radius: 3rem; margin: 2.5rem">
+<h2>Sind Sie sicher, dass Sie diesen Kommentar löschen möchten?</h2>
+<form method="POST">
+{% csrf_token %}
+<input type="submit" value="Löschen">
+</form>
+</div>
+{% endblock content %}

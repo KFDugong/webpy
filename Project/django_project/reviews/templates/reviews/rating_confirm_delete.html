@@ -1,0 +1,10 @@
+{% extends "base.html" %} {% block content %}
+<div style="display: flex; flex-direction: column; border: 1px solid black; padding: 5rem; background-color: white; border-radius: 3rem; margin: 2.5rem; max-width: 30rem">
+	<h2>Sind Sie sicher, dass Sie diese Bewertung löschen möchten?</h2>
+
+	<form method="POST">
+		{% csrf_token %}
+		<button type="submit" class="button-18">Löschen</button>
+	</form>
+</div>
+{% endblock content %}

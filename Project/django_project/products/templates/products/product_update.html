@@ -1,0 +1,11 @@
+{% extends "base.html" %} {% block content %}
+<div style="display: flex; flex-direction: column; border: 1px solid black; padding: 5rem; background-color: white; border-radius: 3rem; margin: 2.5rem">
+	<h2>Produkt bearbeiten</h2>
+	<p>Füllen Sie das folgende Formular aus, um das Produkt zu bearbeiten.</p>
+
+	<form method="post" enctype="multipart/form-data" style="display: flex; flex-direction: column; justify-content: space-evenly">
+		{% csrf_token %} {{ form.as_p }}
+		<button type="submit" class="button-18">Produkt aktualisieren</button>
+	</form>
+</div>
+{% endblock content %}

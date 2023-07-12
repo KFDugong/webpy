@@ -1,0 +1,9 @@
+{% extends "base.html" %} {% block content %}
+<div style="display: flex; flex-direction: column; border: 1px solid black; padding: 5rem; background-color: white; border-radius: 3rem; margin: 2.5rem; max-width: 30rem">
+	<h2>Bewertung aktualisieren</h2>
+	<form method="post">
+		{% csrf_token %} {{ form.as_p }}
+		<button type="submit" class="button-18">Aktualisieren</button>
+	</form>
+</div>
+{% endblock %}

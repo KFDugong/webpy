@@ -1,0 +1,17 @@
+{% extends "base.html" %} {% block content %}
+<div style="display: flex; flex-direction: column; border: 1px solid black; padding: 5rem; background-color: white; border-radius: 3rem; margin: 2.5rem; max-width: 30rem;">
+	<h2>Kommentardetails</h2>
+	<p style="overflow-wrap: break-word; hyphens: auto;">{{ object.text }}</p>
+
+	{% if user.is_authenticated and user == object.user %}
+	<a href="{% url 'reviews:comment_update' object.id %}" style="text-align: center; margin-bottom: 1rem;">Bearbeiten</a>
+	{% endif %} {% if user.is_authenticated and user == object.user or user.is_staff %}
+	<a href="{% url 'reviews:comment_delete' object.id %}" style="text-align: center">Löschen</a>
+	{%endif %} {% if request.user.is_staff or object.user == request.user %}
+	<form action="{% url 'reviews:comment_toggle_hidden' object.id %}" method="post" style="display: flex; flex-direction: column; margin-top: 1rem">
+		{% csrf_token %}
+		<!-- <input type="submit" value="{% if object.is_hidden %}Aufdecken{% else %}Verstecken{% endif %}" class="btn btn-primary" /> -->
+		<button type="submit" class="button-18">{% if object.is_hidden %}Aufdecken{% else %}Verstecken{% endif %}</button>
+	</form>
+</div>
+{% endif %} {% endblock content %}

@@ -1,0 +1,10 @@
+{% extends "base.html" %} {% block content %}
+<div style="display: flex; flex-direction: column; border: 1px solid black; padding: 5rem; background-color: white; border-radius: 3rem; margin: 2.5rem; max-width: 30rem">
+	<h2>Bewertungsdetails</h2>
+	<p>{{ object.rating }}/5 Punkten</p>
+
+	{% if user.is_authenticated and user == object.user %}
+	<a href="{% url 'reviews:rating_update' object.id %}" style="text-align: center; margin-bottom: 1rem;">Bearbeiten</a>
+	<a href="{% url 'reviews:rating_delete' object.id %}" style="text-align: center; margin-bottom: 1rem;">Löschen</a>
+</div>
+{% endif %} {% endblock content %}

@@ -1,0 +1,50 @@
+{% extends "base.html" %} {% block content %}
+<div style="display: flex; flex-direction: column; align-items: center">
+	<h2 style="font-family: Arial, Helvetica, sans-serif">Unsere Produkte</h2>
+
+	<div style="display: flex; flex-direction: column; gap: 1rem">
+		<form method="get">
+			<input type="search" name="q" placeholder="Suche..." value="{{ request.GET.q }}" style="border-radius: 50px; height: 2rem; width: 30rem; padding-left: 1rem" />
+			<button type="submit" value="Suchen" class="button-18">Suchen</button>
+		</form>
+
+		<form method="get">
+			<select name="sort_by" style="width: 30rem; height: 2rem; border-radius: 50px; padding-left: 1rem">
+				<option value="">Sortieren nach...</option>
+				<option value="name">Name</option>
+				<option value="price">Preis</option>
+				<option value="average_rating">Durchschnittsbewertung</option>
+			</select>
+			<button type="submit" class="button-18">Sortieren</button>
+		</form>
+		{% if perms.products.add_product %}
+		<a href="{% url 'products:product_create' %}" style="margin-top: 1rem; text-align: center">Neues Produkt hinzufügen</a>
+		{% endif %}
+	</div>
+
+	<div style="display: flex">
+		<ul style="list-style: none">
+			{% for product in products %}
+			<li style="border: 2px solid black; margin: 2rem; padding: 2rem; border-radius: 3rem; max-width: 50rem; background-color: cornsilk">
+				<h2 style="margin-bottom: 3rem"><a href="{% url 'products:product_detail' pk=product.pk %}">{{product.name}}</a></h2>
+				<img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width: 320px; max-height: 240px; object-fit: contain; margin: auto" />
+				<div style="display: flex; flex-direction: column">
+					<span style="font-weight: bold">Beschreibung: </span>
+					<p style="overflow-wrap: break-word; hyphens: manual; max-width: 50rem">{{ product.description }}</p>
+				</div>
+				<p><span style="font-weight: bold">Einzelpreis:</span> {{ product.price}} €</p>
+				<p><span style="font-weight: bold">Durchschnittliche Bewertung:</span> {% if product.average_rating %}{{ product.average_rating|floatformat:2 }}{% else %}Keine Bewertung{% endif %}</p>
+				{% if perms.products.change_product %}
+				<div style="display: flex; justify-content: space-between">
+					<a href="{% url 'products:product_update' product.pk %}">Produkt bearbeiten</a>
+					<a href="{% url 'products:product_delete' product.pk %}">Löschen</a>
+				</div>
+				{% endif %}
+			</li>
+			{% empty %}
+			<li>Im Moment sind keine Produkte verfügbar.</li>
+			{% endfor%}
+		</ul>
+	</div>
+</div>
+{% endblock content %}

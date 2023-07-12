@@ -1,0 +1,37 @@
+{% extends 'base.html' %} {% block content %}
+<div style="display: flex; flex-direction: column; border: 1px solid black; padding: 5rem; background-color: white; border-radius: 3rem; margin: 5rem; justify-content: center; align-items: center;">
+<div class="table-wrapper">
+	<h2>Mein Warenkorb</h2>
+	{% if cart.cartitem_set.count %}
+	<table class="fl-table">
+		<thead>
+			<tr>
+				<th>Produkt</th>
+				<th>Menge</th>
+				<th>Einzelpreis</th>
+				<th>Preis</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for item in cart.cartitem_set.all %}
+			<tr>
+				<td>{{ item.product.name }}</td>
+				<td>{{ item.quantity }}</td>
+				<td>{{ item.product.price }} €</td>
+				<td>{{ item.total_price }} €</td>
+				<td>
+					<a href="{% url 'carts:remove_from_cart' item.product.id %}">Entfernen</a>
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<p><span style="font-weight: bolder;">Gesamter Preis:</span> {{ cart.total_price }} €</p>
+	<a href="{% url 'carts:checkout' %}">Bezahlen</a>
+	{% else %}
+	<p>Dein Warenkorb ist leer.</p>
+	{% endif %}
+</div>
+</div>
+{% endblock %}

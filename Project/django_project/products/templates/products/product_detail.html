@@ -1,0 +1,133 @@
+{% extends "base.html" %} {% block content %}
+<div style="border: 1px solid black; border-radius: 5rem; padding: 2rem; margin-top: 1rem; max-width: 1100px; background-color: white">
+	<h2 style="text-align: center">{{ product.name }}</h2>
+
+	<img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width: 1024px; max-height: 768px; object-fit: contain; margin: auto" />
+	<h3 style="text-align: center">Beschreibung</h3>
+	<p style="overflow-wrap: break-word; hyphens: auto">{{ product.description }}</p>
+	<p>Preis: {{ product.price }} €</p>
+	<p><span style="font-weight: bold">Durchschnittliche Bewertung:</span> {% if product.average_rating %}{{ product.average_rating|floatformat:2 }}{% else %}Keine Bewertung{% endif %}</p>
+
+	{% if perms.products.change_product %}
+	<a href="{% url 'products:product_update' product.pk %}">Produkt bearbeiten</a>
+	<p><a href="{% url 'products:product_delete' product.pk %}">Produkt löschen</a></p>
+	{% endif %} {% if product.manual %}
+	<p><a href="{{ product.manual.url }}">Bedienungsanleitung herunterladen</a></p>
+	{% endif %}
+
+	<form method="post" action="{% url 'carts:add_to_cart' product.id %}" style="margin: 3rem auto;">
+		{% csrf_token %}
+		<label for="quantity">Menge:</label>
+		<input id="quantity" type="number" name="quantity" min="1" value="1" />
+		<input type="hidden" name="product" value="{{ product.id }}" />
+		{% if user.is_authenticated %}
+		<button type="submit" class="button-18">Zum Warenkorb hinzufügen</button>
+		{% else %}
+		<p>Logge dich ein, um dieses Produkt deinen Warenkorb hinzuzufügen!</p>
+		{% endif %}
+	</form>
+
+	<h3>Hinterlasse einen Kommentar oder eine Bewertung über dieses Produkt!</h3>
+	{% if user.is_authenticated %}
+	<div style="display: flex; justify-content: center; gap: 5rem;">
+		<form method="post" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+			{% csrf_token %}
+			<input type="hidden" name="action" value="rating" />
+			<p>Wähle eine Bewertung zwischen 0 und 5 aus.</p>
+			{{ rating_form.as_p }}
+			<button type="submit" class="button-18">Absenden</button>
+		</form>
+
+		<form method="post" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+			{% csrf_token %}
+			<input type="hidden" name="action" value="review" />
+			{{ comment_form.as_p}}
+			<button type="submit" class="button-18">Absenden</button>
+		</form>
+	</div>
+	{% else %}
+	<p>Login to leave a review about this product!</p>
+
+	{% endif %}
+
+	<h3>Bewertungen</h3>
+	{% for rating in ratings %}
+	<div style="border: 1px solid black; border-radius: 5px; margin: 2rem auto; padding: 2rem">
+		<p style="font-size: 1.2rem">{{ rating.rating }}/5 Punkte von <span style="font-weight: bold">{{ rating.user.username }}</span></p>
+		<p style="font-size: 0.8rem"><span style="font-weight: bold">Posted am </span>{{ rating.created_at|date:"d-m-Y H:i" }}</p>
+		<p style="font-size: 0.8rem"><span style="font-weight: bold">Zuletzt aktualisiert: </span>{{ rating.updated_at|date:"d-m-Y H:i" }}</p>
+		{% if user.is_authenticated and user == rating.user %}
+		<a href="{% url 'reviews:rating_detail' rating.id %}">Anzeigen</a>
+		{% endif %}
+	</div>
+	{% empty %}
+	<p>Noch keine Bewertung für dieses Produkt. Sei die erste Person, um dieses Produkt zu bewerten!</p>
+
+	{% endfor %}
+
+	<h3>Kommentare</h3>
+	{% for comment in comments %} {% if not comment.is_hidden or user.is_staff %}
+	<div style="border: 1px solid black; border-radius: 5px; margin: 2rem auto; padding: 2rem">
+		<p style="font-size: 1.2rem; overflow-wrap: break-word; hyphens: auto;">{{ comment.text }}</p>
+		<p style="font-size: 0.8rem"><span style="font-weight: bold">Autor</span>: {{ comment.user.username }}</p>
+		<p style="font-size: 0.8rem"><span style="font-weight: bold">Posted am </span>{{ comment.created_at|date:"d-m-Y H:i" }}</p>
+		{% if comment.updated_at %}
+		<p style="font-size: 0.8rem"><span style="font-weight: bold">Zuletzt aktualisert: </span>{{ comment.updated_at|date:"d-m-Y H:i" }}</p>
+		{% endif %}
+	</div>
+
+	<div style="display: flex; justify-content: space-between">
+		{% if user.is_authenticated %}
+		<div style="display: flex; gap: 1rem">
+			<a href="{% url 'reviews:comment_feedback' comment.id 0 %}">
+				<svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
+					<style>
+						svg {
+							fill: #ffffff;
+						}
+					</style>
+					<path
+						d="M313.4 32.9c26 5.2 42.9 30.5 37.7 56.5l-2.3 11.4c-5.3 26.7-15.1 52.1-28.8 75.2H464c26.5 0 48 21.5 48 48c0 18.5-10.5 34.6-25.9 42.6C497 275.4 504 288.9 504 304c0 23.4-16.8 42.9-38.9 47.1c4.4 7.3 6.9 15.8 6.9 24.9c0 21.3-13.9 39.4-33.1 45.6c.7 3.3 1.1 6.8 1.1 10.4c0 26.5-21.5 48-48 48H294.5c-19 0-37.5-5.6-53.3-16.1l-38.5-25.7C176 420.4 160 390.4 160 358.3V320 272 247.1c0-29.2 13.3-56.7 36-75l7.4-5.9c26.5-21.2 44.6-51 51.2-84.2l2.3-11.4c5.2-26 30.5-42.9 56.5-37.7zM32 192H96c17.7 0 32 14.3 32 32V448c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32V224c0-17.7 14.3-32 32-32z"
+					/>
+				</svg>
+				Hilfreich
+			</a>
+			<a href="{% url 'reviews:comment_feedback' comment.id 1 %}">
+				<svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
+					<style>
+						svg {
+							fill: #ffffff;
+						}
+					</style>
+					<path
+						d="M313.4 479.1c26-5.2 42.9-30.5 37.7-56.5l-2.3-11.4c-5.3-26.7-15.1-52.1-28.8-75.2H464c26.5 0 48-21.5 48-48c0-18.5-10.5-34.6-25.9-42.6C497 236.6 504 223.1 504 208c0-23.4-16.8-42.9-38.9-47.1c4.4-7.3 6.9-15.8 6.9-24.9c0-21.3-13.9-39.4-33.1-45.6c.7-3.3 1.1-6.8 1.1-10.4c0-26.5-21.5-48-48-48H294.5c-19 0-37.5 5.6-53.3 16.1L202.7 73.8C176 91.6 160 121.6 160 153.7V192v48 24.9c0 29.2 13.3 56.7 36 75l7.4 5.9c26.5 21.2 44.6 51 51.2 84.2l2.3 11.4c5.2 26 30.5 42.9 56.5 37.7zM32 384H96c17.7 0 32-14.3 32-32V128c0-17.7-14.3-32-32-32H32C14.3 96 0 110.3 0 128V352c0 17.7 14.3 32 32 32z"
+					/>
+				</svg>
+				Nicht hilfreich</a
+			>
+			<a href="{% url 'reviews:comment_feedback' comment.id 2 %}"
+				><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512">
+					<style>
+						svg {
+							fill: #ffffff;
+						}
+					</style>
+					<path
+						d="M64 32C64 14.3 49.7 0 32 0S0 14.3 0 32V64 368 480c0 17.7 14.3 32 32 32s32-14.3 32-32V352l64.3-16.1c41.1-10.3 84.6-5.5 122.5 13.4c44.2 22.1 95.5 24.8 141.7 7.4l34.7-13c12.5-4.7 20.8-16.6 20.8-30V66.1c0-23-24.2-38-44.8-27.7l-9.6 4.8c-46.3 23.2-100.8 23.2-147.1 0c-35.1-17.6-75.4-22-113.5-12.5L64 48V32z"
+					/>
+				</svg>
+				Unangemessen
+			</a>
+		</div>
+
+		{% endif %} {% if user.is_authenticated and user == comment.user or user.is_staff%}
+		<a href="{% url 'reviews:comment_detail' comment.id %}">Anzeigen</a>
+		{% endif %} {% endif %}
+	</div>
+	{% empty %}
+
+	<p>Noch keine Kommentare für dieses Produkt. Sei die erste Person, um dieses Produkt zu kommentieren!</p>
+
+	{% endfor %}
+</div>
+{% endblock content %}

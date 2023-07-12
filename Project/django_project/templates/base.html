@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="de">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Project Online-Shop</title>
+		<style>
+			:root {
+				font-family: Arial, Helvetica, sans-serif;
+			}
+			body {
+				background-image: linear-gradient(to right top, #236994, #46769a, #6082a0, #778fa6, #8d9dac, #a3aab2, #b8b8b8, #c4c4c4, #cfcfcf, #dbdbdb, #e7e7e7, #f3f3f3, #ffffff);
+				background-repeat: no-repeat;
+				min-height: 100vh;
+			}
+			a {
+				text-decoration: none;
+				background-color: navy;
+				color: white;
+				padding: 7px 50px;
+				border-radius: 5rem;
+			}
+
+			a:hover {
+				color: lightgray;
+			}
+
+			h2 > a {
+				text-decoration: none;
+				background-color: aliceblue;
+				color: blue;
+			}
+
+			h2 > a:hover {
+				color: orange;
+			}
+
+			h1,
+			h2,
+			h3,
+			h4,
+			h5,
+			h6 {
+				text-align: center;
+			}
+
+			.table-wrapper {
+				margin: 10px 70px 70px;
+				width: 100%;
+			}
+
+			.fl-table {
+				border-radius: 5px;
+				font-weight: normal;
+				border: none;
+				border-collapse: collapse;
+				width: 100%;
+				max-width: 100%;
+				white-space: nowrap;
+				background-color: white;
+			}
+
+			.fl-table td,
+			.fl-table th {
+				text-align: center;
+				padding: 8px;
+			}
+
+			.fl-table td {
+				border-right: 1px solid #f8f8f8;
+			}
+
+			.fl-table thead th {
+				color: #ffffff;
+				background: #a4c34f;
+			}
+
+			.fl-table thead th:nth-child(odd) {
+				color: #ffffff;
+				background: #324960;
+			}
+
+			.fl-table tr:nth-child(even) {
+				background: #f8f8f8;
+			}
+
+			/* Responsive */
+
+			@media (max-width: 767px) {
+				.fl-table {
+					display: block;
+					width: 100%;
+				}
+				.table-wrapper:before {
+					content: 'Scroll horizontally >';
+					display: block;
+					text-align: right;
+
+					color: white;
+					padding: 0 0 10px;
+				}
+				.fl-table thead,
+				.fl-table tbody,
+				.fl-table thead th {
+					display: block;
+				}
+				.fl-table thead th:last-child {
+					border-bottom: none;
+				}
+				.fl-table thead {
+					float: left;
+				}
+				.fl-table tbody {
+					width: auto;
+					position: relative;
+					overflow-x: auto;
+				}
+				.fl-table td,
+				.fl-table th {
+					padding: 20px 0.625em 0.625em 0.625em;
+					height: 60px;
+					vertical-align: middle;
+					box-sizing: border-box;
+					overflow-x: hidden;
+					overflow-y: auto;
+					width: 120px;
+
+					text-overflow: ellipsis;
+				}
+				.fl-table thead th {
+					text-align: left;
+					border-bottom: 1px solid #f7f7f9;
+				}
+				.fl-table tbody tr {
+					display: table-cell;
+				}
+				.fl-table tbody tr:nth-child(odd) {
+					background: none;
+				}
+				.fl-table tr:nth-child(even) {
+					background: transparent;
+				}
+				.fl-table tr td:nth-child(odd) {
+					background: #f8f8f8;
+					border-right: 1px solid #e6e4e4;
+				}
+				.fl-table tr td:nth-child(even) {
+					border-right: 1px solid #e6e4e4;
+				}
+				.fl-table tbody td {
+					display: block;
+					text-align: center;
+				}
+			}
+
+			textarea {
+				margin-top: 10px;
+				width: 500px;
+				height: 100px;
+				-moz-border-bottom-colors: none;
+				-moz-border-left-colors: none;
+				-moz-border-right-colors: none;
+				-moz-border-top-colors: none;
+				background: none repeat scroll 0 0 rgba(0, 0, 0, 0.07);
+				border-color: -moz-use-text-color #ffffff #ffffff -moz-use-text-color;
+				border-image: none;
+				border-radius: 6px 6px 6px 6px;
+				border-style: none solid solid none;
+				border-width: medium 1px 1px medium;
+				box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12) inset;
+				color: #555555;
+				font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+				font-size: 1em;
+				line-height: 1.4em;
+				padding: 5px 8px;
+				transition: background-color 0.2s ease 0s;
+			}
+
+			.rating-number {
+				width: 15rem;
+			}
+
+			.button-18 {
+				align-items: center;
+				background-color: #0a66c2;
+				border: 0;
+				border-radius: 100px;
+				box-sizing: border-box;
+				color: #ffffff;
+				cursor: pointer;
+				display: inline-flex;
+				font-family: -apple-system, system-ui, system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', 'Fira Sans', Ubuntu, Oxygen, 'Oxygen Sans', Cantarell, 'Droid Sans', 'Apple Color Emoji',
+					'Segoe UI Emoji', 'Segoe UI Symbol', 'Lucida Grande', Helvetica, Arial, sans-serif;
+				font-size: 16px;
+				font-weight: 600;
+				justify-content: center;
+				line-height: 20px;
+				max-width: 480px;
+				min-height: 40px;
+				min-width: 0px;
+				overflow: hidden;
+				padding: 0px;
+				padding-left: 20px;
+				padding-right: 20px;
+				text-align: center;
+				touch-action: manipulation;
+				transition: background-color 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s, box-shadow 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s, color 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s;
+				user-select: none;
+				-webkit-user-select: none;
+				vertical-align: middle;
+			}
+
+			.button-18:hover,
+			.button-18:focus {
+				background-color: #16437e;
+				color: #ffffff;
+			}
+
+			.button-18:active {
+				background: #09223b;
+				color: rgb(255, 255, 255, 0.7);
+			}
+
+			.button-18:disabled {
+				cursor: not-allowed;
+				background: rgba(0, 0, 0, 0.08);
+				color: rgba(0, 0, 0, 0.3);
+			}
+
+			.email {
+				width: 20rem;
+			}
+
+			.display-name {
+				width: 20rem;
+			}
+
+			.my-field {
+				display: flex;
+				justify-content: space-between;
+				margin-bottom: 15px;
+			}
+
+			.my-field label {
+				width: 30%; /* Anpassen je nach Bedarf */
+				text-align: left;
+			}
+
+			.my-field input,
+			.my-field textarea,
+			.my-field select {
+				width: 65%; /* Anpassen je nach Bedarf */
+			}
+		</style>
+	</head>
+	<body>
+		<header style="background-color: burlywood; padding: 0.1rem; border: 5px solid black; border-radius: 5rem">
+			<nav>
+				<ul style="list-style: none; display: flex; justify-content: space-around">
+					<div>
+						<li><a href="/">Home</a></li>
+					</div>
+					<div style="display: flex; gap: 2rem">
+						<li><a href="{% url 'products:product_list'%}">Produkte</a></li>
+						{% if user.is_authenticated %}
+						<li><a href="{% url 'users:profile'%}">Profil</a></li>
+						<li><a href="{% url 'carts:view_cart' %}">Warenkorb</a></li>
+						<li><a href="{% url 'users:logout' %}">Logout</a></li>
+						{% else %}
+						<li><a href="{% url 'users:login' %}">Login</a></li>
+						<li><a href="{% url 'users:register' %}">Registrieren</a></li>
+						{% endif %}
+					</div>
+				</ul>
+			</nav>
+		</header>
+		<main style="display: flex; justify-content: center; align-items: center">{% block content %} {% endblock content %}</main>
+		<footer></footer>
+	</body>
+</html>
