@@ -40,6 +40,18 @@ argon2 = ["argon2-cffi (>=19.1.0)"]
 bcrypt = ["bcrypt"]
 
 [[package]]
+name = "django-dotenv"
+version = "1.4.2"
+description = "foreman reads from .env. manage.py doesn't. Let's fix that."
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "django-dotenv-1.4.2.tar.gz", hash = "sha256:3812bb0f4876cf31f902aad140f0645e120e51ee30eb7c40c22050f58a0e4adb"},
+    {file = "django_dotenv-1.4.2-py2.py3-none-any.whl", hash = "sha256:a9b1b40a70bd321acd231926acedb9bd2c5e873e33a1873b34a7276d196a765e"},
+]
+
+[[package]]
 name = "pillow"
 version = "10.0.0"
 description = "Python Imaging Library (Fork)"
@@ -150,5 +162,5 @@ files = [
 
 [metadata]
 lock-version = "2.0"
-python-versions = "^3.9.6"
-content-hash = "dcf7931e3b9b95b97c5866dc6acff2c4d81883eb5888a90837bcc9d245a24d70"
+python-versions = "^3.10"
+content-hash = "168c1c9da891b2dbba432c719096a8669380eb8f204fb6416503bed58620b605"

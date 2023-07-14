@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,13 +24,23 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-l*2r4zz0%k9ge%otdx%f=gz2d5a8d^bl!sxuh47q*ihu1xh@^@"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DJANGO_DEBUG") == "True"
 
-ALLOWED_HOSTS = [
-     'KFDKelvin.pythonanywhere.com',
-     'KelvinKuang.pythonanywhere.com',
-     '127.0.0.1'
-]
+
+if not DEBUG:
+    SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
+
+    ALLOWED_HOSTS = [
+        "127.0.0.1",
+        "KKZihang.eu.pythonanywhere.com",
+    ]
+
+    SECURE_SSL_REDIRECT = True
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
 
 
 # Application definition
@@ -124,7 +135,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
+STATIC_ROOT = BASE_DIR / "static_root"
 STATIC_URL = "static/"
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
